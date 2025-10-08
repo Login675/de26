@@ -225,13 +225,14 @@ exec bash
 ```
 
 ##HQ-CLI
+```tml
 hostnamectl set-hostname hq-cli.au-team.irpo
 mkdir /etc/net/ifaces/ens20
 echo -e "BOOTPROTO=dhcp\nDISABLED=no\nTYPE=eth\nCONFIG_IPV4=yes" > /etc/net/ifaces/ens20/options
 systemctl restart network
 timedatectl set-timezone Asia/Yekaterinburg
 exec bash
-
+```
 ```
 
 ##BR-SRV
