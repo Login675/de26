@@ -193,11 +193,11 @@ echo -e "BOOTPROTO=static\nDISABLED=no\nTYPE=eth\nCONFIG_IPV4=yes" > /etc/net/if
 echo 192.168.1.10/27 > /etc/net/ifaces/ens20/ipv4address
 echo default via 192.168.1.1 > /etc/net/ifaces/ens20/ipv4route
 systemctl restart network
-useradd -u 2026 remote_user
-echo 'remote_user:P@ssw0rd' | chpasswd
+useradd -u 2026 sshuser
+echo 'sshuser:P@ssw0rd' | chpasswd
 sed -i 's/^#\s*\(WHEEL\s\+USERS\s\+ALL=(ALL:ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
-gpasswd -a “remote_user” wheel
-echo -e "Port 2026\nAllowUsers remote_user\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner" > /etc/openssh/sshd_config
+gpasswd -a “sshuser” wheel
+echo -e "Port 2026\nAllowUsers sshuser\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner" > /etc/openssh/sshd_config
 echo Aauthorized access only > /etc/openssh/banner
 systemctl restart sshd
 echo nameserver 8.8.8.8 > /etc/resolv.conf
@@ -242,11 +242,11 @@ echo -e "BOOTPROTO=static\nDISABLED=no\nTYPE=eth\nCONFIG_IPV4=yes" > /etc/net/if
 echo 192.168.3.10/28 > /etc/net/ifaces/ens20/ipv4address
 echo default via 192.168.3.1 > /etc/net/ifaces/ens20/ipv4route
 systemctl restart network
-useradd -u 2026 remote_user
-echo 'remote_user:P@ssw0rd' | chpasswd
+useradd -u 2026 sshuser
+echo 'sshuser:P@ssw0rd' | chpasswd
 sed -i 's/^#\s*\(WHEEL\s\+USERS\s\+ALL=(ALL:ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
-gpasswd -a “remote_user” wheel
-echo -e "Port 2026\nAllowUsers remote_user\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner" > /etc/openssh/sshd_config
+gpasswd -a “sshuser” wheel
+echo -e "Port 2026\nAllowUsers sshuser\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner" > /etc/openssh/sshd_config
 echo Aauthorized access only > /etc/openssh/banner
 systemctl restart sshd
 echo nameserver=8.8.8.8 > /etc/resolv.conf
