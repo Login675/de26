@@ -233,7 +233,6 @@ systemctl restart network
 timedatectl set-timezone Asia/Yekaterinburg
 exec bash
 ```
-```
 
 ##BR-SRV
 ```tml
