@@ -197,7 +197,7 @@ useradd -u 2026 remote_user
 echo 'remote_user:P@ssw0rd' | chpasswd
 sed -i 's/^#\s*\(WHEEL\s\+USERS\s\+ALL=(ALL:ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
 gpasswd -a “remote_user” wheel
-echo -e "Port 2026\nAllowUsers remote_user\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner"
+echo -e "Port 2026\nAllowUsers remote_user\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner" > /etc/openssh/sshd_config
 echo Aauthorized access only > /etc/openssh/banner
 systemctl restart sshd
 echo nameserver 8.8.8.8 > /etc/resolv.conf
@@ -246,7 +246,7 @@ useradd -u 2026 remote_user
 echo 'remote_user:P@ssw0rd' | chpasswd
 sed -i 's/^#\s*\(WHEEL\s\+USERS\s\+ALL=(ALL:ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
 gpasswd -a “remote_user” wheel
-echo -e "Port 2026\nAllowUsers remote_user\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner"
+echo -e "Port 2026\nAllowUsers remote_user\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner" > /etc/openssh/sshd_config
 echo Aauthorized access only > /etc/openssh/banner
 systemctl restart sshd
 echo nameserver=8.8.8.8 > /etc/resolv.conf
