@@ -1,4 +1,4 @@
-## h1 ISP
+## ISP
 ```tml
 hostnamectl set-hostname ISP
 mkdir /etc/net/ifaces/ens{20,21,22}
@@ -19,7 +19,7 @@ timedatectl set-timezone Asia/Yekaterinburg
 exec bash
 
 ```
-##HQ-RTR
+## HQ-RTR
 ```tml
 en
 conf t
@@ -122,7 +122,7 @@ exit
 write
 
 ```
-##BR-RTR
+## BR-RTR
 ```tml
 en
 conf t
@@ -185,7 +185,7 @@ write
 
 ```
 
-##HQ-SRV
+## HQ-SRV
 ```tml
 hostnamectl set-hostname hq-srv.au-team.irpo
 mkdir /etc/net/ifaces/ens20
@@ -224,7 +224,7 @@ exec bash
 
 ```
 
-##HQ-CLI
+## HQ-CLI
 ```tml
 hostnamectl set-hostname hq-cli.au-team.irpo
 mkdir /etc/net/ifaces/ens20
@@ -234,7 +234,7 @@ timedatectl set-timezone Asia/Yekaterinburg
 exec bash
 ```
 
-##BR-SRV
+## BR-SRV
 ```tml
 hostnamectl set-hostname br-srv.au-team.irpo
 mkdir /etc/net/ifaces/ens20
