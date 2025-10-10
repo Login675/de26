@@ -9,13 +9,13 @@ echo nameserver 192.168.1.10 > /etc/resolv.conf
 rm -rf /etc/samba/smb.conf
 
 ```
-## HQ-SRV
+#### HQ-SRV
 ```tml
 sed -i '/address=\/br-srv\.au-team\.irpo\/192\.168\.3\.10/a server=/au-team.irpo/192.168.3.10' /etc/dnsmasq.conf
 systemctl restart  dnsmasq.service
 
 ```
-## BR-SRV
+#### BR-SRV
 ```tml
 expect -c 'spawn samba-tool domain provision; sleep 1; send "\r\r\r\r\r"; expect "Password:"; send "P@ssw0rd\r"; expect "Retype password:"; send "P@ssw0rd\r"; interact'
 mv –f /var/lib/samba/private/krb5.conf /etc/krb5.conf
@@ -29,13 +29,13 @@ samba-tool group add hq
 samba-tool group addmembers hq hquser1,hquser2,hquser3,hquser4,hquser5
 
 ```
-## HQ-CLI
+#### HQ-CLI
 ```tml
 
 
 ```
-###RAID
-## HQ-SRV
+## RAID
+#### HQ-SRV
 ```tml
 mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/sd[b-с]
 mdadm  --detail --scan --verbose > /etc/mdadm.conf
@@ -56,7 +56,7 @@ systemctl enable --now nfs
 systemctl restart nfs
 
 ```
-## HQ-CLI
+#### HQ-CLI
 ```tml
 apt-get update && apt-get install nfs-clients -y
 mkdir –p /mnt/nfs
@@ -66,8 +66,8 @@ mount -v
 touch /mnt/nfs/test
 
 ```
-### NTP
-## ISP
+## NTP
+#### ISP
 ```tml
 apt-get install chrony -y
 echo -e "server 127.0.0.1 iburst prefer\nhwtimestamp *\nlocal stratum 5\nallow 0/0" > /etc/chrony.conf
@@ -76,7 +76,7 @@ systemctl restart chronyd
 chronyc tracking | grep Stratum
 
 ```
-## HQ-RTR
+#### HQ-RTR
 ```tml
 en
 conf t
@@ -87,7 +87,7 @@ show ntp status
 write
 
 ```
-## BR-RTR
+#### BR-RTR
 ```tml
 en
 conf t
@@ -98,7 +98,7 @@ show ntp status
 write
 
 ```
-## HQ-CLI
+#### HQ-CLI
 ```tml
 apt-get install chrony -y
 echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
@@ -107,7 +107,7 @@ systemctl restart chronyd
 chronyc sources
 
 ```
-## HQ-SRV
+#### HQ-SRV
 ```tml
 apt-get install chrony -y
 echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
@@ -116,7 +116,7 @@ systemctl restart chronyd
 chronyc sources
 
 ```
-## BR-SRV
+#### BR-SRV
 ```tml
 apt-get install chrony -y
 echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
@@ -125,8 +125,8 @@ systemctl restart chronyd
 chronyc sources
 
 ```
-### Ansible
-## BR-SRV
+## Ansible
+#### BR-SRV
 ```tml
 apt-get update && apt-get install ansible -y
 echo -e "server 172.16.1.1 iburst prefer" > /etc/ansible/hosts
