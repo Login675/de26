@@ -34,6 +34,7 @@ samba-tool group addmembers hq hquser1,hquser2,hquser3,hquser4,hquser5
 
 
 ```
+###RAID
 ## HQ-SRV
 ```tml
 mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/sd[b-с]
@@ -41,7 +42,7 @@ mdadm  --detail --scan --verbose > /etc/mdadm.conf
 apt-get update && apt-get install fdisk -y
 echo -e "n\n\n\n\n\nw\n" | fdisk /dev/md0
 mkfs.ext4 /dev/md0p1
-echo -e "/dev/md0p1\t/raid\text4\tdefaults\t0\t0" |  tee -a /etc/fstab
+echo -e "/dev/md0p1\t/raid\text4\tdefaults\t0\t0" | tee -a /etc/fstab
 mkdir /raid
 mount -a
 apt-get install nfs-server -y
@@ -50,7 +51,7 @@ chown 99:99 /raid/nfs
 chmod 777 /raid/nfs
 echo "/raid/nfs 192.168.2.0/28(rw,sync,no_subtree_check)" | tee -a /etc/exports
 exportfs -a
-exportfs –v
+exportfs -v
 systemctl enable --now nfs
 systemctl restart nfs
 
@@ -65,6 +66,49 @@ mount -v
 touch /mnt/nfs/test
 
 ```
+###NTP
+##ISP
+```tml
+apt-get install chrony -y
+echo -e "server 127.0.0.1 iburst prefer\nhwtimestamp *\nlocal stratum 5\nallow 0/0" > /etc/chrony.conf
+systemctl enable --now chronyd
+systemctl restart chronyd
+chronyc tracking | grep Stratum
+##HQ-RTR
+en
+conf t
+ntp server 172.16.1.1
+ntp timezone utc+5
+ex
+show ntp status
+write memory
+##BR-RTR
+en
+conf t
+ntp server 172.16.1.1
+ntp timezone utc+5
+ex
+show ntp status
+write memory
+##HQ-CLI
+apt-get install chrony -y
+echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
+systemctl enable --now chronyd
+systemctl restart chronyd
+chronyc sources
+##HQ-SRV
+apt-get install chrony -y
+echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
+systemctl enable --now chronyd
+systemctl restart chronyd
+chronyc sources
+##BR-SRV
+apt-get install chrony -y
+echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
+systemctl enable --now chronyd
+systemctl restart chronyd
+chronyc sources
 
+```
 
 
