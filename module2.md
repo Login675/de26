@@ -2,7 +2,7 @@
 1) Добавить два жестких диска объемом 1 гигабайт: Перейти в PVE > выбрать HQ-SRV > Hardware > Add > Hard disk > Add
 2) Добавить ISO образ: Перейти в PVE > выбрать пункт local (AltPVE) > ISO Images > Upload >
 Выбрать путь к ISO > Upload
-## BR-SRV
+#### BR-SRV
 ```tml
 apt-get update && apt-get install task-samba-dc -y
 echo nameserver 192.168.1.10 > /etc/resolv.conf
