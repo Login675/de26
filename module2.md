@@ -125,5 +125,17 @@ systemctl restart chronyd
 chronyc sources
 
 ```
+### Ansible
+## BR-SRV
+```tml
+apt-get update && apt-get install ansible -y
+echo -e "server 172.16.1.1 iburst prefer" > /etc/ansible/hosts
 
 
+
+
+
+
+
+
+```
