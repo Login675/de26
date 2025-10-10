@@ -129,13 +129,30 @@ chronyc sources
 #### BR-SRV
 ```tml
 apt-get update && apt-get install ansible -y
-echo -e "server 172.16.1.1 iburst prefer" > /etc/ansible/hosts
+echo -e "VMs:\t hosts:\t   HQ-SRV:\t    ansible_host: 192.168.1.10\t    ansible_user: sshuser\t    ansible_port: 2026\t   HQ-CLI:\t    ansible_host: 192.168.2.10\t    ansible_user: sshuser\t    ansible_port: 2026\t   HQ-RTR:\t    ansible_host: 192.168.1.1\t    ansible_user: net_admin\t    ansible_password: P@ssw0rd\t    ansible_connection: network_cli\t    ansible_network_os: ios\t   BR-RTR\t    ansible_host: 192.168.3.1\t    ansible_user: net_admin\t    ansible_password: P@ssw0rd\t    ansible_connection: network_cli\t    ansible_network_os: ios" > /etc/ansible/hosts
+sed -i '/^\[defaults\]/a\
+ansible_python_interpreter=/usr/bin/python3\
+interpreter_python=auto_silent\
+ansible_host_key_checking=false' /etc/ansible/ansible.cfg
 
+```
+#### HQ-CLI
+```tml
+useradd sshuser -u 2026
+passwd remote_user
+echo 'sshuser:P@ssw0rd' | chpasswd
+sed -i 's/^#\s*\(WHEEL\s\+USERS\s\+ALL=(ALL:ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
+gpasswd -a “sshuser” wheel
+echo -e "Port 2026\nAllowUsers sshuser\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner" > /etc/openssh/sshd_config
+echo Aauthorized access only > /etc/openssh/banner
+systemctl restart sshd
 
-
-
-
-
-
+```
+#### BR-SRV
+```tml
+ssh-keygen -t rsa
+ssh-copy-id -p 2026 remote_user@192.168.1.10
+ssh-copy-id -p 2026 remote_user@192.168.2.10
+ansible all -m ping
 
 ```
