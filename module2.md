@@ -66,15 +66,18 @@ mount -v
 touch /mnt/nfs/test
 
 ```
-###NTP
-##ISP
+### NTP
+## ISP
 ```tml
 apt-get install chrony -y
 echo -e "server 127.0.0.1 iburst prefer\nhwtimestamp *\nlocal stratum 5\nallow 0/0" > /etc/chrony.conf
 systemctl enable --now chronyd
 systemctl restart chronyd
 chronyc tracking | grep Stratum
-##HQ-RTR
+
+```
+## HQ-RTR
+```tml
 en
 conf t
 ntp server 172.16.1.1
@@ -82,7 +85,10 @@ ntp timezone utc+5
 ex
 show ntp status
 write memory
-##BR-RTR
+
+```
+## BR-RTR
+```tml
 en
 conf t
 ntp server 172.16.1.1
@@ -90,19 +96,28 @@ ntp timezone utc+5
 ex
 show ntp status
 write memory
-##HQ-CLI
+
+```
+## HQ-CLI
+```tml
 apt-get install chrony -y
 echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
 systemctl enable --now chronyd
 systemctl restart chronyd
 chronyc sources
-##HQ-SRV
+
+```
+## HQ-SRV
+```tml
 apt-get install chrony -y
 echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
 systemctl enable --now chronyd
 systemctl restart chronyd
 chronyc sources
-##BR-SRV
+
+```
+## BR-SRV
+```tml
 apt-get install chrony -y
 echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
 systemctl enable --now chronyd
