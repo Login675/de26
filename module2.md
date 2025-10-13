@@ -70,7 +70,7 @@ touch /mnt/nfs/test
 ## NTP
 #### ISP
 ```tml
-apt-get install chrony -y
+apt-get update && apt-get install chrony -y
 echo -e "server 127.0.0.1 iburst prefer\nhwtimestamp *\nlocal stratum 5\nallow 0/0" > /etc/chrony.conf
 systemctl enable --now chronyd
 systemctl restart chronyd
@@ -101,7 +101,7 @@ write
 ```
 #### HQ-CLI
 ```tml
-apt-get install chrony -y
+apt-get update && apt-get install chrony -y
 echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
 systemctl enable --now chronyd
 systemctl restart chronyd
@@ -110,7 +110,7 @@ chronyc sources
 ```
 #### HQ-SRV
 ```tml
-apt-get install chrony -y
+apt-get update && apt-get install chrony -y
 echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
 systemctl enable --now chronyd
 systemctl restart chronyd
@@ -119,7 +119,7 @@ chronyc sources
 ```
 #### BR-SRV
 ```tml
-apt-get install chrony -y
+apt-get update && apt-get install chrony -y
 echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
 systemctl enable --now chronyd
 systemctl restart chronyd
