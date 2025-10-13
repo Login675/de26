@@ -140,7 +140,7 @@ ansible_host_key_checking=false' /etc/ansible/ansible.cfg
 #### HQ-CLI
 ```tml
 useradd sshuser -u 2026
-passwd remote_user
+passwd sshuser
 echo 'sshuser:P@ssw0rd' | chpasswd
 sed -i 's/^#\s*\(WHEEL\s\+USERS\s\+ALL=(ALL:ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
 gpasswd -a “sshuser” wheel
@@ -152,8 +152,8 @@ systemctl restart sshd
 #### BR-SRV
 ```tml
 ssh-keygen -t rsa
-ssh-copy-id -p 2026 remote_user@192.168.1.10
-ssh-copy-id -p 2026 remote_user@192.168.2.10
+echo -e "y\nPassw0rd\n" | ssh-copy-id -p 2026 sshuser@192.168.1.10
+echo -e "y\nPassw0rd\n" | ssh-copy-id -p 2026 sshuser@192.168.2.10
 ansible all -m ping
 
 ```
