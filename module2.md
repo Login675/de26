@@ -225,7 +225,7 @@ systemctl restart network
 curl -I http://192.168.3.10:8080
 
 ```
-## Moodle
+## WEB
 #### HQ-SRV
 ```tml
 apt-get update
