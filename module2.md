@@ -105,6 +105,7 @@ apt-get update && apt-get install chrony -y
 echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
 systemctl enable --now chronyd
 systemctl restart chronyd
+sleep 2
 chronyc sources
 
 ```
@@ -114,6 +115,7 @@ apt-get update && apt-get install chrony -y
 echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
 systemctl enable --now chronyd
 systemctl restart chronyd
+sleep 2
 chronyc sources
 
 ```
@@ -123,6 +125,7 @@ apt-get update && apt-get install chrony -y
 echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
 systemctl enable --now chronyd
 systemctl restart chronyd
+sleep 2
 chronyc sources
 
 ```
