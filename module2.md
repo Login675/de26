@@ -10,8 +10,6 @@ systemctl restart dnsmasq
 
 ```
 
-
-```
 ## RAID
 #### HQ-SRV
 ```tml
