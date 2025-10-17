@@ -3,35 +3,12 @@
 2) Добавить ISO образ(HQ-SRV,BR-SRV): Перейти в PVE > выбрать пункт local (AltPVE) > ISO Images > Upload >
 Выбрать путь к ISO > Upload
 ## Samba
-#### BR-SRV
-```tml
-apt-get update && apt-get install task-samba-dc -y
-echo nameserver 192.168.1.10 > /etc/resolv.conf
-rm -rf /etc/samba/smb.conf
-
-```
 #### HQ-SRV
-```tml
-sed -i '/address=\/br-srv\.au-team\.irpo\/192\.168\.3\.10/a server=/au-team.irpo/192.168.3.10' /etc/dnsmasq.conf
-systemctl restart  dnsmasq.service
+```tsl
+echo "server=/au-team.irpo/192.168.3.10" >> /etc/dnsmasq.conf
+systemctl restart dnsmasq
 
 ```
-#### BR-SRV
-```tml
-expect -c 'spawn samba-tool domain provision; sleep 1; send "\r\r\r\r\r"; expect "Password:"; send "P@ssw0rd\r"; expect "Retype password:"; send "P@ssw0rd\r"; interact'
-mv –f /var/lib/samba/private/krb5.conf /etc/krb5.conf
-systemctl enable --now samba
-samba-tool user add hquser1 P@ssword
-samba-tool user add hquser2 P@ssword
-samba-tool user add hquser3 P@ssword
-samba-tool user add hquser4 P@ssword
-samba-tool user add hquser5 P@ssword
-samba-tool group add hq
-samba-tool group addmembers hq hquser1,hquser2,hquser3,hquser4,hquser5
-
-```
-#### HQ-CLI
-```tml
 
 
 ```
