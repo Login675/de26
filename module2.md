@@ -137,7 +137,7 @@ echo -e "VMs:\n hosts:\n   HQ-SRV:\n    ansible_host: 192.168.1.10\n    ansible_
 sed -i '/^\[defaults\]/a\
 ansible_python_interpreter=/usr/bin/python3\
 interpreter_python=auto_silent\
-ansible_host_key_checking=false' /etc/ansible/ansible.cfg
+ansible_host_key_checking=false' > /etc/ansible/ansible.cfg
 
 ```
 #### HQ-CLI
