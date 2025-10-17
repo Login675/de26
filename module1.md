@@ -278,7 +278,7 @@ gpasswd -a “sshuser” wheel
 echo -e "Port 2026\nAllowUsers sshuser\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner" > /etc/openssh/sshd_config
 echo Aauthorized access only > /etc/openssh/banner
 systemctl restart sshd
-echo nameserver=8.8.8.8 > /etc/resolv.conf
+echo nameserver 8.8.8.8 > /etc/resolv.conf
 timedatectl set-timezone Asia/Yekaterinburg
 exec bash
 
