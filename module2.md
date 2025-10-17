@@ -203,7 +203,6 @@ ansible all -m ping
 ```tml
 apt-get update && apt-get install docker-compose docker-engine -y
 systemctl enable --now docker
-systemctl status docker
 mount -o loop /dev/sr0
 docker load < /media/ALTLinux/docker/site_latest.tar
 docker load < /media/ALTLinux/docker/mariadb_latest.tar
@@ -214,10 +213,8 @@ docker compose -f site.yml down && docker compose -f site.yml up -d
 mkdir -p /root/config
 echo -e "#! /bin/bash\n\ndocker compose -f /root/site.yml down\nsystemctl restart docker\ndocker compose -f /root/site.yml up -d" > /root/config/autorestart.sh
 export EDITOR=vim
-crontab -e
-# Нажимайте i, и в самом конце пишите
-@reboot /root/config/autorestart.sh
-# Затем нажимайте ESC > :wq
+echo -e "@reboot\t/root/config/autorestart.sh" >> /var/spool/cron/root
+
 ```
 #### HQ-CLI
 ```tml
