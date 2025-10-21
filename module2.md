@@ -168,29 +168,21 @@ chronyc sources
 
 ```
 ## Ansible
-#### BR-SRV
-```tml
-apt-get update && apt-get install ansible -y
-echo -e "VMs:\n hosts:\n  HQ-SRV:\n   ansible_host: 192.168.1.10\n   ansible_user: sshuser\n   ansible_port: 2026\n  HQ-CLI:\n   ansible_host: 192.168.2.10\n   ansible_user: sshuser\n   ansible_port: 2026\n  HQ-RTR:\n   ansible_host: 192.168.1.1\n   ansible_user: net_admin\n   ansible_password: P@ssw0rd\n   ansible_connection: network_cli\n   ansible_network_os: ios\n  BR-RTR:\n   ansible_host: 192.168.3.1\n   ansible_user: net_admin\n   ansible_password: P@ssw0rd\n   ansible_connection: network_cli\n   ansible_network_os: ios" > /etc/ansible/hosts
-sed -i '/^\[defaults\]/a\
-ansible_python_interpreter=/usr/bin/python3\
-interpreter_python=auto_silent\
-ansible_host_key_checking=false' /etc/ansible/ansible.cfg
-
-```
 #### HQ-CLI
 ```tml
 adduser sshuser -u 2026 && echo "P@ssw0rd" | passwd --stdin sshuser
-sed -i 's/^#\s*\(WHEEL\s\+USERS\s\+ALL=(ALL:ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
+sed -i 's/# WHEEL_USERS ALL=(ALL:ALL) NOPASSWD: ALL/ WHEEL_USERS ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers
 gpasswd -a "sshuser" wheel
-echo -e "Port 2026\nAllowUsers sshuser\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner" > /etc/openssh/sshd_config
-echo Aauthorized access only > /etc/openssh/banner
+echo Authorized access only > /etc/openssh/banner
+sed -i '1i\Port 2026\nAllowUsers sshuser\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner' /etc/openssh/sshd_config
 systemctl restart sshd
 
 ```
 #### BR-SRV
 ```tml
-apt-get update && apt-get install sshpass -y
+apt-get update && apt-get install sshpass ansible docker-compose docker-engine -y
+echo -e "[servers]\nHQ-SRV ansible_host=192.168.1.10\nHQ-CLI ansible_host=192.168.2.10\n[servers:vars]\nansible_user=sshuser\nansible_port=2026\n[routers]\nHQ-RTR ansible_host=192.168.1.1\nBR-RTR ansible_host=192.168.3.1\n[routers:vars]\nansible_user=net_admin\nansible_password=P@ssw0rd\nansible_connection=network_cli\nansible_network_os=ios" > /etc/ansible/hosts
+sed -i "10a\interpreter_python=auto_silent" /etc/ansible/ansible.cfg
 ssh-keygen -t rsa -f ~/.ssh/id_rsa -N ""
 sshpass -p 'P@ssw0rd' ssh-copy-id -o StrictHostKeyChecking=no -p 2026 sshuser@192.168.1.10
 sshpass -p 'P@ssw0rd' ssh-copy-id -o StrictHostKeyChecking=no -p 2026 sshuser@192.168.2.10
