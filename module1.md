@@ -195,46 +195,25 @@ write
 
 ## HQ-SRV
 ```tml
-cp /etc/apt/sources.list.d/alt.list /etc/apt/sources.list.d/alt.list.bak
-sed -i 's|^rpm.*ftp\.altlinux|# &|g' /etc/apt/sources.list.d/alt.list
-cat >> /etc/apt/sources.list.d/alt.list <<EOF
-rpm [p10] http://192.168.0.222/mirror p10/branch/x86_64 classic
-rpm [p10] http://192.168.0.222/mirror p10/branch/noarch classic
-rpm [p10] http://192.168.0.222/mirror p10/branch/x86_64-i586 classic
-EOF
-hostnamectl set-hostname hq-srv.au-team.irpo
+hostnamectl hostname hq-srv.au-team.irpo
+timedatectl set-timezone Asia/Yekaterinburg
+adduser sshuser -u 2026 && echo "P@ssw0rd" | passwd --stdin sshuser
+sed -i 's/# WHEEL_USERS ALL=(ALL:ALL) NOPASSWD: ALL/ WHEEL_USERS ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers
+gpasswd -a "sshuser" wheel
+echo Authorized access only > /etc/openssh/banner
+sed -i '1i\Port 2026\nAllowUsers sshuser\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner' /etc/openssh/sshd_config
+systemctl restart sshd
 mkdir /etc/net/ifaces/ens20
-echo -e "BOOTPROTO=static\nDISABLED=no\nTYPE=eth\nCONFIG_IPV4=yes" > /etc/net/ifaces/ens20/options
+echo -e "DISABLED=no\nTYPE=eth\nBOOTPROTO=static\nCONFIG_IPV4=yes" >> /etc/net/ifaces/ens20/options
 echo 192.168.1.10/27 > /etc/net/ifaces/ens20/ipv4address
 echo default via 192.168.1.1 > /etc/net/ifaces/ens20/ipv4route
-systemctl restart network
-adduser sshuser -u 2026 && echo "P@ssw0rd" | passwd --stdin sshuser
-sed -i 's/^\s*#\s*\(WHEEL_USERS\s\+ALL=(ALL:ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
-gpasswd -a "sshuser" wheel
-echo -e "Port 2026\nAllowUsers sshuser\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner" > /etc/openssh/sshd_config
-echo Aauthorized access only > /etc/openssh/banner
-systemctl restart sshd
 echo nameserver 8.8.8.8 > /etc/resolv.conf
+systemctl restart network
 apt-get update && apt-get install dnsmasq -y
-systemctl enable --now dnsmasq
-sed -i '1i\
-no-resolv\n\
-domain=au-team.irpo\n\
-server=8.8.8.8\n\
-interface=ens20\n\
-address=/hq-rtr.au-team.irpo/192.168.1.1\n\
-ptr-record=1.1.168.192.in-addr.arpa,hq-rtr.au-team.irpo\n\
-address=/docker.au-team.irpo/172.16.1.1\n\
-address=/web.au-team.irpo/172.16.2.1\n\
-address=/br-rtr.au-team.irpo/192.168.3.1\n\
-address=/hq-srv.au-team.irpo/192.168.1.10\n\
-ptr-record=10.1.168.192.in-addr.arpa,hq-srv.au-team.irpo\n\
-address=/hq-cli.au-team.irpo/192.168.2.10\n\
-ptr-record=10.2.168.192.in-addr.arpa,hq-cli.au-team.irpo\n\
-address=/br-srv.au-team.irpo/192.168.3.10' /etc/dnsmasq.conf
+sed -i '1i\no-resolv\ndomain=au-team.irpo\nserver=8.8.8.8\ninterface=*\naddress=/hq-rtr.au-team.irpo/192.168.1.1\nptr-record=1.1.168.192.in-addr.arpa,hq-rtr.au-team.irpo\naddress=/docker.au-team.irpo/172.16.1.1\naddress=/web.au-team.irpo/172.16.2.1\naddress=/br-rtr.au-team.irpo/192.168.3.1\naddress=/hq-srv.au-team.irpo/192.168.1.10\nptr-record=10.1.168.192.in-addr.arpa,hq-srv.au-team.irpo\naddress=/hq-cli.au-team.irpo/192.168.2.10\nptr-record=10.2.168.192.in-addr.arpa,hq-cli.au-team.irpo\naddress=/br-srv.au-team.irpo/192.168.3.10' /etc/dnsmasq.conf
 echo -e "192.168.1.1\thq-rtr.au-team.irpo" >> /etc/hosts
+systemctl enable --now dnsmasq
 systemctl restart dnsmasq
-timedatectl set-timezone Asia/Yekaterinburg
 exec bash
 
 ```
