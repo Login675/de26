@@ -276,7 +276,7 @@ systemctl restart network
 useradd -u 2026 sshuser
 echo 'sshuser:P@ssw0rd' | chpasswd
 sed -i 's/^\s*#\s*\(WHEEL_USERS\s\+ALL=(ALL:ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
-gpasswd -a “sshuser” wheel
+gpasswd -a "sshuser" wheel
 echo -e "Port 2026\nAllowUsers sshuser\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner" > /etc/openssh/sshd_config
 echo Aauthorized access only > /etc/openssh/banner
 systemctl restart sshd
