@@ -197,7 +197,47 @@ systemctl enable --now docker
 mount -o loop /dev/sr0
 docker load < /media/ALTLinux/docker/site_latest.tar
 docker load < /media/ALTLinux/docker/mariadb_latest.tar
-echo -e "services:\n db:\n  image: mariadb\n  container_name: db\n  environment:\n\tDB_NAME: testdb\n\tDB_USER: test\n\tDB_PASS: Passw0rd\n\tMYSQL_ROOT_PASSWORD: Passw0rd\n\tMYSQL_DATABASE: testdb\n\tMYSQL_USER: test\n\tMYSQL_PASSWORD: Passw0rd\n  volumes:\n\t- db_data:/var/lib/mysql\n  networks:\n\t- app_network\n  restart: unless-stopped\n\n testapp:\n  image: site\n  container_name: testapp\n  environment:\n\tDB_TYPE: maria\n\tDB_HOST: db\n\tDB_NAME: testdb\n\tDB_USER: test\n\tDB_PASS: Passw0rd\n\tDB_PORT: 3306\n  ports:\n\t- "8080:8000"\n  networks:\n\t- app_network\n  depends_on:\n\t- db\n  restart: unless-stopped\nvolumes:\n db_data:\n\nnetworks:\n app_network:\n  driver: bridge" > /root/site.yml
+cat > docker-compose.yml << 'EOF'
+services:
+  db:
+    image: mariadb
+    container_name: db
+    environment:
+      DB_NAME: testdb
+      DB_USER: test
+      DB_PASS: Passw0rd
+      MYSQL_ROOT_PASSWORD: Passwr0d
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: test
+      MYSQL_PASSWORD: Passw0rd
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app_network
+    restart: unless-stopped
+  testapp:
+    image: site
+    container_name: testapp
+    environment:
+      DB_TYPE: maria
+      DB_HOST: db
+      DB_NAME: testdb
+      DB_USER: test
+      DB_PASS: Passw0rd
+      DB_PORT: 3306
+    ports:
+      - "8080:8000"
+    networks:
+      - app_network
+    depends_on:
+      - db
+    restart: unless-stopped
+volumes:
+  db_data:
+networks:
+  app_network:
+    driver: bridge
+EOF
 docker compose -f site.yml up -d
 docker exec -it db mysql -u root -pPassw0rd -e "CREATE DATABASE testdb; CREATE USER 'test'@'%' IDENTIFIED BY 'Passw0rd'; GRANT ALL PRIVILEGES ON testdb.* TO 'test'@'%'; FLUSH PRIVILEGES;"
 docker compose -f site.yml down && docker compose -f site.yml up -d
