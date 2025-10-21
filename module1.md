@@ -195,6 +195,13 @@ write
 
 ## HQ-SRV
 ```tml
+cp /etc/apt/sources.list.d/alt.list /etc/apt/sources.list.d/alt.list.bak
+sed -i 's|^rpm.*ftp\.altlinux|# &|g' /etc/apt/sources.list.d/alt.list
+cat >> /etc/apt/sources.list.d/alt.list <<EOF
+rpm [p10] http://192.168.0.222/mirror p10/branch/x86_64 classic
+rpm [p10] http://192.168.0.222/mirror p10/branch/noarch classic
+rpm [p10] http://192.168.0.222/mirror p10/branch/x86_64-i586 classic
+EOF
 hostnamectl hostname hq-srv.au-team.irpo
 timedatectl set-timezone Asia/Yekaterinburg
 adduser sshuser -u 2026 && echo "P@ssw0rd" | passwd --stdin sshuser
