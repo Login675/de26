@@ -232,6 +232,7 @@ ptr-record=10.1.168.192.in-addr.arpa,hq-srv.au-team.irpo\n\
 address=/hq-cli.au-team.irpo/192.168.2.10\n\
 ptr-record=10.2.168.192.in-addr.arpa,hq-cli.au-team.irpo\n\
 address=/br-srv.au-team.irpo/192.168.3.10' /etc/dnsmasq.conf
+echo -e "192.168.1.1\thq-rtr.au-team.irpo" >> /etc/hosts
 systemctl restart dnsmasq
 timedatectl set-timezone Asia/Yekaterinburg
 exec bash
