@@ -254,6 +254,8 @@ echo -e "BOOTPROTO=dhcp\nDISABLED=no\nTYPE=eth\nCONFIG_IPV4=yes" > /etc/net/ifac
 systemctl restart network
 timedatectl set-timezone Asia/Yekaterinburg
 exec bash
+apt-get update
+
 ```
 
 ## BR-SRV
