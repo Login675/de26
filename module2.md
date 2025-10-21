@@ -238,13 +238,18 @@ networks:
     driver: bridge
 EOF
 docker compose -f site.yml up -d
-docker exec -it db mysql -u root -pPassw0rd -e "CREATE DATABASE testdb; CREATE USER 'test'@'%' IDENTIFIED BY 'Passw0rd'; GRANT ALL PRIVILEGES ON testdb.* TO 'test'@'%'; FLUSH PRIVILEGES;"
-docker compose -f site.yml down && docker compose -f site.yml up -d
-mkdir -p /root/config
-echo -e "#! /bin/bash\n\ndocker compose -f /root/site.yml down\nsystemctl restart docker\ndocker compose -f /root/site.yml up -d" > /root/config/autorestart.sh
+sleep 2
+mkdir config
+sleep 2
+echo -e "docker compose -f down\nsystemctl restart docker\ndocker compose up -d" > config/autorestart.sh
+sleep 2
 export EDITOR=vim
+sleep 2
 echo -e "@reboot\t/root/config/autorestart.sh" >> /var/spool/cron/root
-
+sleep 2
+docker exec -it db mysql -u root -pPassw0rd -e "CREATE DATABASE testdb; CREATE USER 'test'@'%' IDENTIFIED BY 'Passw0rd'; GRANT ALL PRIVILEGES ON testdb.* TO 'test'@'%'; FLUSH PRIVILEGES;"
+sleep 2
+docker compose down && docker compose up -d
 ```
 #### HQ-CLI
 ```tml
