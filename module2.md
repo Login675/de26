@@ -182,7 +182,7 @@ ansible_host_key_checking=false' /etc/ansible/ansible.cfg
 ```tml
 adduser sshuser -u 2026 && echo "P@ssw0rd" | passwd --stdin sshuser
 sed -i 's/^#\s*\(WHEEL\s\+USERS\s\+ALL=(ALL:ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
-gpasswd -a “sshuser” wheel
+gpasswd -a "sshuser" wheel
 echo -e "Port 2026\nAllowUsers sshuser\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner" > /etc/openssh/sshd_config
 echo Aauthorized access only > /etc/openssh/banner
 systemctl restart sshd
