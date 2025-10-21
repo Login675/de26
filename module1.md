@@ -208,8 +208,7 @@ echo -e "BOOTPROTO=static\nDISABLED=no\nTYPE=eth\nCONFIG_IPV4=yes" > /etc/net/if
 echo 192.168.1.10/27 > /etc/net/ifaces/ens20/ipv4address
 echo default via 192.168.1.1 > /etc/net/ifaces/ens20/ipv4route
 systemctl restart network
-useradd -u 2026 sshuser
-echo 'sshuser:P@ssw0rd' | chpasswd
+adduser sshuser -u 2026 && echo "P@ssw0rd" | passwd --stdin sshuser
 sed -i 's/^\s*#\s*\(WHEEL_USERS\s\+ALL=(ALL:ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
 gpasswd -a “sshuser” wheel
 echo -e "Port 2026\nAllowUsers sshuser\nMaxAuthTries 2\nPasswordAuthentication yes\nBanner /etc/openssh/banner" > /etc/openssh/sshd_config
