@@ -196,7 +196,7 @@ systemctl enable --now docker
 mount -o loop /dev/sr0
 docker load < /media/ALTLinux/docker/site_latest.tar
 docker load < /media/ALTLinux/docker/mariadb_latest.tar
-cat > docker-compose.yml << 'EOF'
+cat > /root/site.yml << 'EOF'
 services:
   db:
     image: mariadb
