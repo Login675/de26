@@ -260,26 +260,61 @@ curl -I http://192.168.3.10:8080
 ## WEB
 #### HQ-SRV
 ```tml
-apt-get update
-apt-get install apache2 php8.2 apache2-mod_php8.2 mariadb-server php8.2-{opcache,curl,gd,intl,mysqli,xml,xmlrpc,ldap,zip,soap,mbstring,json,xmlreader,fileinfo,sodium} -y
+apt-get update && apt-get install apache2 php8.2 apache2-mod_php8.2 mariadb-server php8.2-{opcache,curl,gd,intl,mysqli,xml,xmlrpc,ldap,zip,soap,mbstring,json,xmlreader,fileinfo,sodium} -y
 mount -o loop /dev/sr0
 systemctl enable --now httpd2 mysqld
+
+cat > run_secure_mysql.expect << 'EOF'
+#!/usr/bin/expect -f
+
+set timeout 10
+spawn mysql_secure_installation
+
+expect "Enter password for user root:"
+send "P@ssw0rd\r"
+
+expect "Change the password for root ?"
+send "n\r"
+
+expect "Remove anonymous users?"
+send "Y\r"
+
+expect "Disallow root login remotely?"
+send "Y\r"
+
+expect "Remove test database and access to it?"
+send "Y\r"
+
+expect "Reload privilege tables now?"
+send "Y\r"
+
+expect eof
+EOF
+chmod +x run_secure_mysql.expect
+./run_secure_mysql.expect
+
+
 echo -e "\n\n\nP@ssw0rd" | mysql_secure_installation
-mariadb -u root -p
-CREATE DATABASE webdb;
-CREATE USER 'webc'@'localhost' IDENTIFIED BY 'P@ssw0rd';
-GRANT ALL PRIVILEGES ON webdb.* TO 'webc'@'localhost';
-FLUSH PRIVILEGES;
-exit
+
+
+echo -e "\n\n\n\n\nP@ssw0rd\nP@ssw0rd\n\n\n\n" | mysql_secure_installation
+mariadb -u root -pP@ssw0rd -e "CREATE DATABASE webdb; CREATE USER 'webc'@'localhost' IDENTIFIED BY 'P@ssw0rd'; GRANT ALL PRIVILEGES ON webdb.* TO 'webc'@'localhost'; FLUSH PRIVILEGES;"
 iconv -f UTF-16LE -t UTF-8 /media/ALTLinux/web/dump.sql > /tmp/dump_utf8.sql
-mariadb -u root -p webdb < /tmp/dump_utf8.sql
+mariadb -u root -pP@ssw0rd webdb < /tmp/dump_utf8.sql
 chmod 777 /var/www/html
 cp /media/ALTLinux/web/index.php /var/www/html
 cp /media/ALTLinux/web/logo.png /var/www/html
 rm -f /var/www/html/index.html
 chown apache2:apache2 /var/www/html
 systemctl restart httpd2
-echo -e "$servername = "localhost";\n$username = "webc";\n$password = "P@ssw0rd";\n$dbname = "webdb";" > /var/www/html/index.php
+cat <<EOF > /var/www/html/index.php
+<?php
+\$servername = "localhost";
+\$username = "webc";
+\$password = "P@ssw0rd";
+\$dbname = "webdb";
+?>
+EOF
 
 ```
 #### HQ-CLI
@@ -311,30 +346,41 @@ wr
 ## Nginx
 #### ISP
 ```tml
-apt-get update && apt-get install nginx -y
-echo -e "server {\n\tlisten 80;\n\tserver_name web.au-team.irpo;\n\n\tlocation / {\n\t\tproxy_pass http://172.16.1.4:8080;\n\t\tproxy_set_header Host $host;\n\t\tproxy_set_header X-Real-IP $remote_addr;\n\t}\n}\n\nserver {\n\tlisten 80;\n\tserver_name docker.au-tam.irpo;\n\n\tlocation / {\n\t\tproxy_pass http://172.16.2.5:8080;\n\t\tproxy_set_header Host $host;\n\t\tproxy_set_header X-Real-IP $remote_addr;\n\t}\n}" > /etc/nginx/sites-available.d/proxy.conf
-ln -s /etc/nginx/sites-available.d/proxy.conf /etc/nginx/sites-enabled.d/
-mv /etc/nginx/sites-available.d/default.conf /root/
-systemctl enable --now nginx
-systemctl restart nginx
-curl -I http://web.au-team.irpo
-curl -I http://docker.au-team.irpo
-
-```
-## web-based аутентификация
-#### ISP
-```tml
-apt-get update && apt-get install apache2-htpasswd -y
+apt-get install nginx apache2-htpasswd -y
 htpasswd -bc /etc/nginx/.htpasswd WEB P@ssw0rd
-echo -e "server {\n\tlisten 80;\n\tserver_name web.au-team.irpo;\n\n\tlocation / {\n\t\tproxy_pass http://172.16.1.4:8080;\n\t\tproxy_set_header Host $host;\n\t\tproxy_set_header X-Real-IP $remote_addr;\n\t}\n}\n\nserver {\n\tlisten 80;\n\tserver_name docker.au-tam.irpo;\n\tauth_basic "Restricted Access";\n\tauth_basic_user_file /etc/nginx/.htpasswd;\n\tlocation / {\n\t\tproxy_pass http://172.16.2.5:8080;\n\t\tproxy_set_header Host $host;\n\t\tproxy_set_header X-Real-IP $remote_addr;\n\t}\n}" > /etc/nginx/sites-available/proxy.conf
-systemctl restart nginx
+cat > /etc/nginx/sites-available.d/proxy.conf << 'EOF'
+server {
+        listen 80;
+        server_name web.au-team.irpo;
+        auth_basic "Restricted Access";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+        location / {
+                proxy_pass http://172.16.1.4:8080;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+        }
+}
+server {
+        listen 80;
+        server_name docker.au-team.irpo;
+        location / {
+                proxy_pass http://172.16.2.5:8080;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+        }
+}
+EOF
+sleep 2
+ln -s /etc/nginx/sites-available.d/proxy.conf /etc/nginx/sites-enabled.d/
+mv /etc/nginx/sites-avalible.d/default.conf /root/
+systemctl enable --now nginx
 
 ```
 #### HQ-CLI
 ```tml
 systemctl restart network
 curl -I http://web.au-team.irpo
-
+curl -I http://docker.au-team.irpo
 ```
 ## Установка Яндекс Браузера
 #### HQ-CLI
