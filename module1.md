@@ -34,7 +34,7 @@ conf t
 hostname hq-rtr
 ip domain-name au-team.irpo
 interface int0
-description “to isp”
+description "to isp"
 ip address 172.16.1.4/28
 exit
 port te0
@@ -46,11 +46,11 @@ interface int0
 connect port te0 service-instance te0/int0
 exit
 interface int1
-description “to hq-srv”
+description "to hq-srv"
 ip address 192.168.1.1/27
 exit
 interface int2
-description “to hq-cli”
+description "to hq-cli"
 ip address 192.168.2.1/28
 exit
 port te1
@@ -70,7 +70,7 @@ interface int2
 connect port te1 service-instance te1/int2
 exit
 interface int3
-description “999”
+description "999"
 ip address 192.168.99.1/29
 exit
 port te1
@@ -137,7 +137,7 @@ conf t
 hostname br-rtr
 ip domain-name au-team.irpo
 interface int0
-description “to isp”
+description "to isp"
 ip address 172.16.2.5/28
 exit
 port te0
@@ -149,7 +149,7 @@ interface int0
 connect port te0 service-instance te0/int0
 exit
 interface int1
-description “to br-srv”
+description "to br-srv"
 ip address 192.168.3.1/28
 exit
 port te1
@@ -240,7 +240,7 @@ echo -e "BOOTPROTO=dhcp\nDISABLED=no\nTYPE=eth\nCONFIG_IPV4=yes" > /etc/net/ifac
 systemctl restart network
 timedatectl set-timezone Asia/Yekaterinburg
 exec bash
-apt-get update
+apt-get update -y
 
 ```
 
@@ -269,5 +269,6 @@ systemctl restart sshd
 echo nameserver 8.8.8.8 > /etc/resolv.conf
 timedatectl set-timezone Asia/Yekaterinburg
 exec bash
+apt-get update -y
 
 ```
