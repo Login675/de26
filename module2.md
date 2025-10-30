@@ -20,8 +20,6 @@ echo "server=/au-team.irpo/192.168.3.10" >> /etc/dnsmasq.conf
 systemctl restart dnsmasq
 
 ```
-</details>
-
 #### BR-SRV
 ```tml
 apt-get update && apt-get install wget dos2unix task-samba-dc -y
@@ -85,7 +83,7 @@ sss_cache -E
 systemctl restart sssd
 sudo -l -U hquser1
 
-```
+```</summary>
 ## RAID
 #### HQ-SRV
 ```tml
