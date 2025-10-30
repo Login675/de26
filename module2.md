@@ -84,9 +84,9 @@ sudo -l -U hquser1
 
 ```
 </details>
-<details>
+<details><summary>
 
-## RAID
+## RAID</summary>
 #### HQ-SRV
 ```tml
 mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/sd[b-с]
@@ -118,7 +118,10 @@ mount -v
 touch /mnt/nfs/test
 
 ```
-## NTP
+</details>
+<details><summary>
+
+## NTP</summary>
 #### ISP
 ```tml
 apt-get update && apt-get install chrony -y
@@ -181,9 +184,9 @@ chronyc sources
 
 ```
 </details>
-<details>
+<details><summary>
 
-## Ansible
+## Ansible</summary>
 #### HQ-CLI
 ```tml
 adduser sshuser -u 2026 && echo "P@ssw0rd" | passwd --stdin sshuser
@@ -206,9 +209,9 @@ ansible all -m ping
 
 ```
 </details>
-<details>
+<details><summary>
 
-## Docker
+## Docker</summary>
 #### BR-SRV
 ```tml
 systemctl enable --now docker
@@ -277,9 +280,9 @@ curl -I http://192.168.3.10:8080
 
 ```
 </details>
-<details>
+<details><summary>
 
-## WEB
+## WEB</summary>
 #### HQ-SRV
 ```tml
 apt-get update && apt-get install apache2 php8.2 apache2-mod_php8.2 mariadb-server php8.2-{opcache,curl,gd,intl,mysqli,xml,xmlrpc,ldap,zip,soap,mbstring,json,xmlreader,fileinfo,sodium} -y
@@ -311,9 +314,9 @@ systemctl restart network
 curl -I http://192.168.1.10
 ```
 </details>
-<details>
+<details><summary>
 
-## Проброс портов
+## Проброс портов</summary>
 #### HQ-RTR
 ```tml
 en
@@ -334,9 +337,9 @@ wr
 
 ```
 </details>
-<details>
+<details><summary>
 
-## Nginx
+## Nginx</summary>
 #### ISP
 ```tml
 apt-get install nginx apache2-htpasswd -y
@@ -376,9 +379,9 @@ curl -I http://web.au-team.irpo
 curl -I http://docker.au-team.irpo
 ```
 </details>
-<details>
+<details><summary>
 
-## Установка Яндекс Браузера
+## Установка Яндекс Браузера</summary>
 #### HQ-CLI
 ```tml
 apt-get update && apt-get install yandex-browser -y
