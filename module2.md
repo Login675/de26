@@ -1,7 +1,19 @@
-## Подготовка машин
+<details>
+  <summary>Нажмите, чтобы развернуть</summary>
+  
+  - Внутренний пункт 1
+  - Внутренний пункт 2
+  - Еще что-то
+  
+</details>
+
+
+<details> <summary>## Подготовка машин</summary>
+  ## Подготовка машин
 1) Добавить два жестких диска объемом 1 гигабайт(HQ-SRV): Перейти в PVE > выбрать HQ-SRV > Hardware > Add > Hard disk > Add
 2) Добавить ISO образ(HQ-SRV,BR-SRV): Перейти в PVE > выбрать пункт local (AltPVE) > ISO Images > Upload >
 Выбрать путь к ISO > Upload
+  </details>
 ## Samba
 #### HQ-SRV
 ```tml
