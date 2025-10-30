@@ -1,5 +1,4 @@
-<details>
-<summary>По пунктам</summary>
+### <details><summary> По пунктам</summary>
 <details>
 <summary>
 
