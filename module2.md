@@ -3,7 +3,6 @@
 </summary>
 </details>
 
-
 <details> <summary> 
 
 ## Подготовка машин </summary>
@@ -83,7 +82,9 @@ sss_cache -E
 systemctl restart sssd
 sudo -l -U hquser1
 
-```</details>
+```
+</details>
+
 ## RAID
 #### HQ-SRV
 ```tml
