@@ -39,6 +39,7 @@
 
 <details><summary><strong>По пунктам</strong></summary>
 <details><summary><strong>Samba</strong></summary>
+  
 #### HQ-SRV
 ```tml
 echo "server=/au-team.irpo/192.168.3.10" >> /etc/dnsmasq.conf
