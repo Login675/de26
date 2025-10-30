@@ -211,9 +211,6 @@ sudo_provider = ad' /etc/sssd/sssd.conf
 sed -i 's/services = nss, pam/services = nss, pam, sudo/' /etc/sssd/sssd.conf
 sed -i '28 a\
 sudoers: files sss' /etc/nsswitch.conf
-rm -rf /var/lib/sss/db/*
-sss_cache -E
-systemctl restart sssd
 apt-get update && apt-get install nfs-clients -y
 mkdir –p /mnt/nfs
 echo -e "192.168.1.10:/raid/nfs\t/mnt/nfs\tnfs\tintr,soft,_netdev,x-systemd.automount\t0\t0" | tee -a /etc/fstab
@@ -232,6 +229,7 @@ systemctl restart sshd
 touch /mnt/nfs/test
 apt-get update && apt-get install yandex-browser -y
 chronyc sources
+reboot
 
 ```
 #### BR-SRV
@@ -343,15 +341,19 @@ export EDITOR=vim
 sleep 2
 echo -e "@reboot\t/root/config/autorestart.sh" >> /var/spool/cron/root
 sleep 2
-docker exec -it db mysql -u root -pPassw0rd -e "CREATE DATABASE testdb; CREATE USER 'test'@'%' IDENTIFIED BY 'Passw0rd'; GRANT ALL PRIVILEGES ON testdb.* TO 'test'@'%'; FLUSH PRIVILEGES;"
-sleep 2
 ansible all -m ping
 sleep 2
 chronyc sources
+sleep 2
+docker exec -it db mysql -u root -pPassw0rd -e "CREATE DATABASE testdb; CREATE USER 'test'@'%' IDENTIFIED BY 'Passw0rd'; GRANT ALL PRIVILEGES ON testdb.* TO 'test'@'%'; FLUSH PRIVILEGES;"
+
 
 ```
-#### Проверка на HQ-CLI
+#### После перезагрузки HQ-CLI
 ```tml
+rm -rf /var/lib/sss/db/*
+sss_cache -E
+systemctl restart sssd
 sudo -l -U hquser1
 curl -I http://192.168.3.10:8080
 curl -I http://192.168.1.10
