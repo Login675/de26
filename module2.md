@@ -2,6 +2,8 @@
 <summary>
 </summary>
 </details>
+<details><summary>
+## По пунктам</summary>
 
 <details> <summary> 
 
@@ -387,5 +389,6 @@ curl -I http://docker.au-team.irpo
 apt-get update && apt-get install yandex-browser -y
 
 ```
+</details>
 </details>
 
