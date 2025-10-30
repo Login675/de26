@@ -6,6 +6,7 @@
 <details><summary><strong>Спидран</strong></summary>
 
 </details>
+<details><summary><strong>По пунктам</strong></summary>
 <details><summary><strong>Samba</strong></summary>
 #### HQ-SRV
 ```tml
