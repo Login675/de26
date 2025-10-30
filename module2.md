@@ -3,9 +3,40 @@
 2) Добавить ISO образ(HQ-SRV,BR-SRV): Перейти в PVE > выбрать пункт local (AltPVE) > ISO Images > Upload >
 Выбрать путь к ISO > Upload
 </details>
+
+
+
+
 <details><summary><strong>Спидран</strong></summary>
 
+#### ISP
+```tml
+
+```
+#### 
+```tml
+
+```
+#### HQ-RTR
+```tml
+
+```
+#### ISP
+```tml
+
+```
+#### ISP
+```tml
+
+```
+#### ISP
+```tml
+
+```
 </details>
+
+
+
 <details><summary><strong>По пунктам</strong></summary>
 <details><summary><strong>Samba</strong></summary>
 #### HQ-SRV
