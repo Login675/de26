@@ -1,4 +1,11 @@
 <details><summary> 
+  
+### Спидран</summary>
+прараправ
+ывапывп
+</details>
+
+<details><summary> 
 
 ### По пунктам</summary>
 <details>
