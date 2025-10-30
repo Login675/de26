@@ -84,6 +84,7 @@ sudo -l -U hquser1
 
 ```
 </details>
+<details>
 
 ## RAID
 #### HQ-SRV
@@ -179,6 +180,9 @@ sleep 2
 chronyc sources
 
 ```
+</details>
+<details>
+
 ## Ansible
 #### HQ-CLI
 ```tml
@@ -201,6 +205,9 @@ sshpass -p 'P@ssw0rd' ssh-copy-id -o StrictHostKeyChecking=no -p 2026 sshuser@19
 ansible all -m ping
 
 ```
+</details>
+<details>
+
 ## Docker
 #### BR-SRV
 ```tml
@@ -269,6 +276,9 @@ systemctl restart network
 curl -I http://192.168.3.10:8080
 
 ```
+</details>
+<details>
+
 ## WEB
 #### HQ-SRV
 ```tml
@@ -300,6 +310,8 @@ EOF
 systemctl restart network
 curl -I http://192.168.1.10
 ```
+</details>
+<details>
 
 ## Проброс портов
 #### HQ-RTR
@@ -321,6 +333,9 @@ end
 wr
 
 ```
+</details>
+<details>
+
 ## Nginx
 #### ISP
 ```tml
@@ -360,9 +375,14 @@ systemctl restart network
 curl -I http://web.au-team.irpo
 curl -I http://docker.au-team.irpo
 ```
+</details>
+<details>
+
 ## Установка Яндекс Браузера
 #### HQ-CLI
 ```tml
 apt-get update && apt-get install yandex-browser -y
 
 ```
+</details>
+
