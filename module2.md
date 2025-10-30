@@ -1,10 +1,6 @@
 <details>
-  <summary>Нажмите, чтобы развернуть</summary>
-  
-  - Внутренний пункт 1
-  - Внутренний пункт 2
-  - Еще что-то
-  
+<summary>
+</summary>
 </details>
 
 
@@ -15,14 +11,17 @@
 2) Добавить ISO образ(HQ-SRV,BR-SRV): Перейти в PVE > выбрать пункт local (AltPVE) > ISO Images > Upload >
 Выбрать путь к ISO > Upload
 </details>
-
-## Samba
+<details>  <summary>
+  
+## Samba </summary>
 #### HQ-SRV
 ```tml
 echo "server=/au-team.irpo/192.168.3.10" >> /etc/dnsmasq.conf
 systemctl restart dnsmasq
 
 ```
+</details>
+
 #### BR-SRV
 ```tml
 apt-get update && apt-get install wget dos2unix task-samba-dc -y
