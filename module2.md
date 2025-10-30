@@ -345,8 +345,8 @@ echo -e "@reboot\t/root/config/autorestart.sh" >> /var/spool/cron/root
 sleep 2
 docker exec -it db mysql -u root -pPassw0rd -e "CREATE DATABASE testdb; CREATE USER 'test'@'%' IDENTIFIED BY 'Passw0rd'; GRANT ALL PRIVILEGES ON testdb.* TO 'test'@'%'; FLUSH PRIVILEGES;"
 sleep 2
-docker compose down && docker compose up -d
 ansible all -m ping
+sleep 2
 chronyc sources
 
 ```
