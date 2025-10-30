@@ -1,6 +1,10 @@
+<details><summary><strong>Подготовка машин</strong></summary>
+1) Добавить два жестких диска объемом 1 гигабайт(HQ-SRV): Перейти в PVE > выбрать HQ-SRV > Hardware > Add > Hard disk > Add
+2) Добавить ISO образ(HQ-SRV,BR-SRV): Перейти в PVE > выбрать пункт local (AltPVE) > ISO Images > Upload >
+Выбрать путь к ISO > Upload
+</details>
 <details><summary><strong>Спидран</strong></summary>
-прараправ
-ывапывп
+
 </details>
 
 <details><summary><strong>По пунктам</strong></summary>
