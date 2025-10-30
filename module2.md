@@ -201,16 +201,6 @@ chronyc sources
 ```
 #### HQ-CLI
 ```tml
-systemctl restart network
-apt-get update && apt-get install bind-utils sudo libsss_sudo -y
-system-auth write ad AU-TEAM.IRPO cli AU-TEAM 'administrator' 'P@ssw0rd'
-
-control sudo public
-sed -i '19 a\
-sudo_provider = ad' /etc/sssd/sssd.conf
-sed -i 's/services = nss, pam/services = nss, pam, sudo/' /etc/sssd/sssd.conf
-sed -i '28 a\
-sudoers: files sss' /etc/nsswitch.conf
 apt-get update && apt-get install nfs-clients -y
 mkdir –p /mnt/nfs
 echo -e "192.168.1.10:/raid/nfs\t/mnt/nfs\tnfs\tintr,soft,_netdev,x-systemd.automount\t0\t0" | tee -a /etc/fstab
@@ -229,7 +219,6 @@ systemctl restart sshd
 touch /mnt/nfs/test
 apt-get update && apt-get install yandex-browser -y
 chronyc sources
-reboot
 
 ```
 #### BR-SRV
@@ -349,8 +338,18 @@ docker exec -it db mysql -u root -pPassw0rd -e "CREATE DATABASE testdb; CREATE U
 
 
 ```
-#### После перезагрузки HQ-CLI
+#### HQ-CLI
 ```tml
+systemctl restart network
+apt-get update && apt-get install bind-utils sudo libsss_sudo -y
+system-auth write ad AU-TEAM.IRPO cli AU-TEAM 'administrator' 'P@ssw0rd'
+
+control sudo public
+sed -i '19 a\
+sudo_provider = ad' /etc/sssd/sssd.conf
+sed -i 's/services = nss, pam/services = nss, pam, sudo/' /etc/sssd/sssd.conf
+sed -i '28 a\
+sudoers: files sss' /etc/nsswitch.conf
 rm -rf /var/lib/sss/db/*
 sss_cache -E
 systemctl restart sssd
@@ -359,6 +358,7 @@ curl -I http://192.168.3.10:8080
 curl -I http://192.168.1.10
 curl -I http://web.au-team.irpo
 curl -I http://docker.au-team.irpo
+
 ```
 </details>
 
