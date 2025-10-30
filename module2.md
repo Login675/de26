@@ -1,4 +1,4 @@
-<details><summary>**Спидран**</summary>
+<details><summary><strong>Спидран</strong>strong</summary>
 прараправ
 ывапывп
 </details>
