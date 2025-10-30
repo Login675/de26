@@ -188,14 +188,9 @@ cp /media/ALTLinux/web/logo.png /var/www/html
 rm -f /var/www/html/index.html
 chown apache2:apache2 /var/www/html
 systemctl restart httpd2
-cat <<EOF > /var/www/html/index.php
-<?php
-\$servername = "localhost";
-\$username = "webc";
-\$password = "P@ssw0rd";
-\$dbname = "webdb";
-?>
-EOF
+sed -i 's/$username = "user";/$username = "webc";/g' /var/www/html/index.php
+sed -i 's/$password = "password";/$password = "P@ssw0rd";/g' /var/www/html/index.php
+sed -i 's/$dbname = "db";/$dbname = "webdb";/g' /var/www/html/index.php
 chronyc sources
 
 ```
