@@ -281,18 +281,13 @@ services:
     image: mariadb
     container_name: db
     environment:
-      DB_NAME: testdb
-      DB_USER: test
-      DB_PASS: Passw0rd
       MYSQL_ROOT_PASSWORD: Passwr0d
       MYSQL_DATABASE: testdb
       MYSQL_USER: test
       MYSQL_PASSWORD: Passw0rd
     volumes:
       - db_data:/var/lib/mysql
-    networks:
-      - app_network
-    restart: unless-stopped
+    restart: always
   testapp:
     image: site
     container_name: testapp
@@ -305,16 +300,9 @@ services:
       DB_PORT: 3306
     ports:
       - "8080:8000"
-    networks:
-      - app_network
-    depends_on:
-      - db
-    restart: unless-stopped
+    restart: always
 volumes:
   db_data:
-networks:
-  app_network:
-    driver: bridge
 EOF
 docker compose -f site.yml up -d
 sleep 2
