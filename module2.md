@@ -196,6 +196,7 @@ chronyc sources
 ```
 #### HQ-CLI
 ```tml
+systemctl restart network
 apt-get update && apt-get install nfs-clients -y
 mkdir –p /mnt/nfs
 echo -e "192.168.1.10:/raid/nfs\t/mnt/nfs\tnfs\tintr,soft,_netdev,x-systemd.automount\t0\t0" | tee -a /etc/fstab
