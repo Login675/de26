@@ -684,7 +684,7 @@ curl -I http://192.168.3.10:8080
 
 #### HQ-SRV
 ```tml
-apt-get update && apt-get install apache2 php8.2 apache2-mod_php8.2 mariadb-server php8.2-{opcache,curl,gd,intl,mysqli,xml,xmlrpc,ldap,zip,soap,mbstring,json,xmlreader,fileinfo,sodium} -y
+apt-get update && apt-get install apache2 php8.2 apache2-mod_php8.2 mariadb-server php8.2-mysqli -y
 mount -o loop /dev/sr0
 systemctl enable --now httpd2 mysqld
 echo -e "\n\n\n\n\nP@ssw0rd\nP@ssw0rd\n\n\n\n" | mysql_secure_installation
