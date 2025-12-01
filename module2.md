@@ -266,7 +266,32 @@ echo -e "server 172.16.1.1 iburst prefer" > /etc/chrony.conf
 systemctl enable --now chronyd
 systemctl restart chronyd
 apt-get update && apt-get install sshpass ansible docker-compose docker-engine -y
-echo -e "[servers]\nHQ-SRV ansible_host=192.168.1.10\nHQ-CLI ansible_host=192.168.2.10\n[servers:vars]\nansible_user=sshuser\nansible_port=2026\n[routers]\nHQ-RTR ansible_host=192.168.1.1\nBR-RTR ansible_host=192.168.3.1\n[routers:vars]\nansible_user=net_admin\nansible_password=P@ssw0rd\nansible_connection=network_cli\nansible_network_os=ios" > /etc/ansible/hosts
+cat > /etc/ansible/hosts << 'EOF'
+VMs:
+ hosts:
+  HQ-SRU:
+   ansible_host: 192.168.1.10
+   ansible user: remote user
+   ansible_port: 2026
+  HQ-CLI:
+   ansible_host: 192.168.2.10
+   ansible_user: remote_user
+   ansible_port: 2026
+  HQ-RTR:
+   ansible_host: 192.168.1.1
+   ansible_user: net_adnin
+   ansible_password: Pessu0rd
+   ansible_connection: network_cli
+   ansible_network_os: ios
+  BR-RTR:
+   ansible_host: 192.168.3.1
+   ansible user: net admin
+   ansible_password: Pessw0rd
+   ansible_connection: network_cli
+   ansible_network_os: ios
+EOF
+
+
 sed -i "10a\interpreter_python=auto_silent" /etc/ansible/ansible.cfg
 ssh-keygen -t rsa -f ~/.ssh/id_rsa -N ""
 sshpass -p 'P@ssw0rd' ssh-copy-id -o StrictHostKeyChecking=no -p 2026 sshuser@192.168.1.10
