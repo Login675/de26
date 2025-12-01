@@ -269,24 +269,24 @@ apt-get update && apt-get install sshpass ansible docker-compose docker-engine -
 cat > /etc/ansible/hosts << 'EOF'
 VMs:
  hosts:
-  HQ-SRU:
+  HQ-SRV:
    ansible_host: 192.168.1.10
-   ansible user: remote user
+   ansible_user: sshuser
    ansible_port: 2026
   HQ-CLI:
    ansible_host: 192.168.2.10
-   ansible_user: remote_user
+   ansible_user: sshuser
    ansible_port: 2026
   HQ-RTR:
    ansible_host: 192.168.1.1
-   ansible_user: net_adnin
-   ansible_password: Pessu0rd
+   ansible_user: net_admin
+   ansible_password: P@ssw0rd
    ansible_connection: network_cli
    ansible_network_os: ios
   BR-RTR:
    ansible_host: 192.168.3.1
-   ansible user: net admin
-   ansible_password: Pessw0rd
+   ansible_user: net_admin
+   ansible_password: P@ssw0rd
    ansible_connection: network_cli
    ansible_network_os: ios
 EOF
