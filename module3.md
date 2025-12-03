@@ -2,7 +2,7 @@
 ```tml
 mkdir /iso
 mount -o loop /dev/sr0 /iso
-echo "/dev/sr0	/iso	iso9660	loop,ro,auto	0	0" | sudo tee -a /etc/fstab
+echo -e "/dev/sr0/t/iso/tiso9660/tloop,ro,auto/t0/t0" | sudo tee -a /etc/fstab
 cp /iso/playbook/get_hostname_address.yml /etc/ansible/playbook.yml
 mkdir /etc/ansible/PC-INFO
 cat > /etc/ansible/playbook.yml << 'EOF'
