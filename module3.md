@@ -27,4 +27,5 @@ ansible-playbook /etc/ansible/playbook.yml
 ls -la /etc/ansible/PC-INFO
 cat /etc/ansible/PC-INFO/hq-srv.txt
 cat /etc/ansible/PC-INFO/hq-cli.txt
+
 ```
