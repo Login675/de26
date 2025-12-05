@@ -639,7 +639,7 @@ apt-get update && apt-get install lamp-server -y
 mount -o loop /dev/sr0 /mnt
 cp /mnt/web/index.php /var/www/html
 cp /mnt/web/logo.png /var/www/html
-cat <<EOF > /var/www/html/index.php
+cat <<EOF >> /var/www/html/index.php
 <?php
 \$servername = "localhost";
 \$username = "webc";
