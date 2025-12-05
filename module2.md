@@ -476,7 +476,7 @@ systemctl restart sshd
 ```
 #### BR-SRV
 ```tml
-apt-get update && apt-get install sshpass ansible docker-compose docker-engine -y
+apt-get update && apt-get install sshpass ansible docker-compose-v2 docker-engine -y
 echo -e "[servers]\nHQ-SRV ansible_host=192.168.1.10\nHQ-CLI ansible_host=192.168.2.10\n[servers:vars]\nansible_user=sshuser\nansible_port=2026\n[routers]\nHQ-RTR ansible_host=192.168.1.1\nBR-RTR ansible_host=192.168.3.1\n[routers:vars]\nansible_user=net_admin\nansible_password=P@ssw0rd\nansible_connection=network_cli\nansible_network_os=ios" > /etc/ansible/hosts
 sed -i "10a\interpreter_python=auto_silent" /etc/ansible/ansible.cfg
 ssh-keygen -t rsa -f ~/.ssh/id_rsa -N ""
@@ -487,6 +487,81 @@ ansible all -m ping
 ```
 </details>
 <details><summary><strong>Docker</strong></summary>
+
+#### BR-SRV new
+```tml
+systemctl enable --now docker
+mount -o loop /dev/sr0 /mnt
+docker load < /mnt/docker/site_latest.tar
+docker load < /mnt/docker/mariadb_latest.tar
+cat > /root/site.yml << 'EOF'
+services:
+  db:
+    image: mariadb:10.11
+    container_name: db
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_DATABASE: "testdb"
+      MARIADB_USER: "testc"
+      MARIADB_PASSWORD: "P@ssw0rd"
+      MARIADB_ROOT_PASSWORD: "toor"
+
+  testapp:
+    image: site
+    container_name: testapp
+    restart: always
+    ports:
+      - "8080:8000"
+    environment:
+      DB_TYPE: maria
+      DB_HOST: db
+      DB_NAME: testdb
+      DB_USER: test
+      DB_PASS: Passw0rd
+      DB_PORT: 3306
+    depends_on:
+      - db
+EOF
+docker compose -f site.yml up -d
+
+```
+#### HQ-CLI
+```tml
+systemctl restart network
+curl -I http://192.168.3.10:8080
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #### BR-SRV
 ```tml
@@ -558,6 +633,59 @@ curl -I http://192.168.3.10:8080
 </details>
 <details><summary><strong>WEB</strong></summary>
 
+#### HQ-SRV NEW
+```tml
+apt-get update && apt-get install lamp-server -y
+mount -o loop /dev/sr0 /mnt
+cp /mnt/web/index.php /var/www/html
+cp /mnt/web/logo.png /var/www/html
+cat <<EOF > /var/www/html/index.php
+<?php
+\$servername = "localhost";
+\$username = "webc";
+\$password = "P@ssw0rd";
+\$dbname = "webdb";
+?>
+EOF
+systemctl enable --now mariadb
+mariadb -u root -pP@ssw0rd -e "CREATE DATABASE webdb; CREATE USER 'webc'@'localhost' IDENTIFIED BY 'P@ssw0rd'; GRANT ALL PRIVILEGES ON webdb.* TO 'webc'@'localhost' WITH GRANT OPTION;"  @@@@в конце такая штука была не знаю будет ли без нее работать FLUSH PRIVILEGES@@@
+mariadb -u webc -pP@ssw0rd -D webdb < /mnt/web/dump.sql
+systemctl enable --now httpd2
+
+```
+#### HQ-CLI
+```tml
+systemctl restart network
+curl -I http://192.168.1.10
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #### HQ-SRV
 ```tml
 apt-get update && apt-get install apache2 php8.2 apache2-mod_php8.2 mariadb-server php8.2-mysqli -y
@@ -587,6 +715,7 @@ EOF
 ```tml
 systemctl restart network
 curl -I http://192.168.1.10
+
 ```
 </details>
 <details><summary><strong>Проброс портов</strong></summary>
@@ -620,9 +749,7 @@ htpasswd -bc /etc/nginx/.htpasswd WEB P@ssw0rd
 cat > /etc/nginx/sites-available.d/proxy.conf << 'EOF'
 server {
         listen 80;
-        server_name web.au-team.irpo;
-        auth_basic "Restricted Access";
-        auth_basic_user_file /etc/nginx/.htpasswd;
+        server_name docker.au-team.irpo;
         location / {
                 proxy_pass http://172.16.1.4:8080;
                 proxy_set_header Host $host;
@@ -631,7 +758,9 @@ server {
 }
 server {
         listen 80;
-        server_name docker.au-team.irpo;
+        server_name web.au-team.irpo;
+        auth_basic “Restricted Access”;
+        auth_basic_user_file /etc/nginx/.htpasswd;
         location / {
                 proxy_pass http://172.16.2.5:8080;
                 proxy_set_header Host $host;
@@ -641,8 +770,8 @@ server {
 EOF
 sleep 2
 ln -s /etc/nginx/sites-available.d/proxy.conf /etc/nginx/sites-enabled.d/
-mv /etc/nginx/sites-avalible.d/default.conf /root/
 systemctl enable --now nginx
+systemctl restart nginx
 
 ```
 #### HQ-CLI
@@ -650,6 +779,7 @@ systemctl enable --now nginx
 systemctl restart network
 curl -I http://web.au-team.irpo
 curl -I http://docker.au-team.irpo
+
 ```
 </details>
 <details><summary><strong>Установка Яндекс Браузера</strong></summary>
