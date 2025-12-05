@@ -518,8 +518,8 @@ services:
       DB_TYPE: maria
       DB_HOST: db
       DB_NAME: testdb
-      DB_USER: test
-      DB_PASS: Passw0rd
+      DB_USER: testc
+      DB_PASS: P@ssw0rd
       DB_PORT: 3306
     depends_on:
       - db
